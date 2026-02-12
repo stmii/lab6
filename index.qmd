@@ -1,7 +1,110 @@
 ---
 title: "lab6"
+author: "Steven Todd McIntyre II"
+runtime: shiny
 format: 
   dashboard:
     theme: minty
+    output:
+      orientation: columns
+execute:
+  warning: false
+  message: false
+  echo: false
+embed-resources: true
 ---
+```{r}
+# load dependencies
+library(palmerpenguins)
+library(tidyverse)
+library(viridis)
+library(RColorBrewer)
+library(colorspace)
+library(ggrepel)
+library(gghighlight)
+library(colorblindr)
+library(colorBlindness)
+library(plotly)
+library(shiny)
+
+```
+
+
+# Page 1
+
+## Column 
+
+### Row {.tabset}
+
+```{r}
+#| title: "Bill Length & Width" 
+set2_penguins <- penguins |>
+  ggplot(aes(bill_length_mm, bill_depth_mm)) +
+    geom_point(aes(color = species)) +
+    scale_color_brewer(palette = "Set2") +
+    theme_minimal() +
+      labs(
+      title = "Penguin Bill Length and Width for Various Species",
+      x = "Bill Length (mm)",
+      y = "Bill Width (mm)",
+      color = "Species",
+      caption = "Data Sourced from the palmerpenguins package:
+      https://allisonhorst.github.io/palmerpenguins/."
+    )
+set2_penguins
+```
+
+```{r}
+#| title: "Flipper Length & Body Mass"
+flipper_inferno <- penguins |>
+  ggplot(aes(x=flipper_length_mm, y=body_mass_g, color=bill_length_mm)) +
+    geom_point() +
+    scale_color_viridis_c(option = "inferno") +
+    labs(
+      title = "Dimensions of Palmer's Penguins",
+      x = "Flipper Length (mm)",
+      y = "Body Mass (g)",
+      color = "Bill Length (mm)",
+      caption = "Data Sourced from the palmerpenguins package:
+      https://allisonhorst.github.io/palmerpenguins/."
+    ) +
+    theme_minimal()
+flipper_inferno
+```
+
+
+### Row
+```{r}
+#| title: "Mean Mass by Species/Sex"
+penguin_summary <- penguins |>
+  drop_na(sex) |>
+  group_by(species, sex) |>
+  summarize(mean_mass = mean(body_mass_g), .groups="drop")
+
+penguin_heatmap <- penguin_summary |>
+  ggplot(aes(x=species, y=sex, fill=mean_mass)) +
+  geom_tile(color="white") +
+  scale_fill_distiller(palette = "RdBu", direction = -1) +
+  labs(
+      title = "Mean Penguin Mass by Species and Sex",
+      x = "Species",
+      y = "Sex",
+      fill = "Mean Penguin Mass (g)",
+      caption = "Data Sourced from the palmerpenguins package:
+      https://allisonhorst.github.io/palmerpenguins/."
+  ) +
+  geom_text(aes(label = round(mean_mass, digits = 1))) +
+  theme_minimal()
+  
+
+ggplotly(penguin_heatmap)
+```
+
+
+## Sidebar {.sidebar}
+
+<--- Aren't those some cool graphs?
+
+# Page 2
+
 
