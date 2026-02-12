@@ -30,7 +30,7 @@ library(shiny)
 ```
 
 
-# Page 1
+# Penguin Plots
 
 ## Column 
 
@@ -103,8 +103,13 @@ ggplotly(penguin_heatmap)
 
 ## Sidebar {.sidebar}
 
-<--- Aren't those some cool graphs?
+<--- Aren't those some cool penguin plots?
 
-# Page 2
+It's hard to come up with a joke about penguins...
+
+# Punchline Page
+
+They just don't fly.
+
 
 
